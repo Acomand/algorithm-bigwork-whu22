@@ -17,8 +17,8 @@
 4.在线算法禁止移动已摆放的箱子
 
 装箱问题：
-箱柜装载问题(three-dimensional bin packing problem，简称3D-BPP)：给定一些不同类型的方型箱子和一些规格统一的方型容器，问题是要把所有箱子装入最少数量的容器中。
-容器装载问题(three-dimensional container-packing problems，简称3D-CPP)：在该问题中，所有箱子要装入一个不限尺寸的容器中，目标是要找一个装填，使得容器体积最小。
+箱柜装载问题(three-dimensional bin packing problem，简称3D-BPP)：给定一些不同类型的方型箱子和一些规格统一的方型容器，问题是要把所有箱子装入最少数量的容器中；
+容器装载问题(three-dimensional container-packing problems，简称3D-CPP)：在该问题中，所有箱子要装入一个不限尺寸的容器中，目标是要找一个装填，使得容器体积最小；
 √ 背包装载问题(three-dimensional knapsack loading problems，简称**3D-KLP**)：每个箱子有一定的价值，背包装载是选择一部分箱子装入容器中，使得装入容器中的箱子总价值最大。如果把箱子的体积作为价值，则目标转化为**使容器浪费的体积最小**。
 
 参考：
