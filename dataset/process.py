@@ -14,6 +14,6 @@ for l in open("./raw_description.txt", "r", encoding="utf-8"):
     df.loc[len(df)] = ["C", carriage[0], carriage[1], carriage[2], 1]
     for b in box:
       df.loc[len(df)] = ["B", b[0], b[1], b[2], b[3]]
-    df.to_csv(name + ".csv")
+    df.to_csv(name + ".csv", index=True)
     name, carriage, box = None, None, None
   
