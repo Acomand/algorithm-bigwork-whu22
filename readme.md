@@ -25,10 +25,12 @@
 √ 背包装载问题(three-dimensional knapsack loading problems，简称**3D-KLP**)：每个箱子有一定的价值，背包装载是选择一部分箱子装入容器中，使得装入容器中的箱子总价值最大。如果把箱子的体积作为价值，则目标转化为**使容器浪费的体积最小**。
 
 参考：
-1.https://blog.csdn.net/TIQCmatlab/article/details/112131351?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-112131351-blog-125376144.pc_relevant_recovery_v2&spm=1001.2101.3001.4242.2&utm_relevant_index=4
-2.https://blog.csdn.net/weixin_37522117/article/details/125376144
+1.遗传和模拟退火算法
+https://blog.csdn.net/TIQCmatlab/article/details/112131351?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-112131351-blog-125376144.pc_relevant_recovery_v2&spm=1001.2101.3001.4242.2&utm_relevant_index=4
+2.启发式DFS
+https://blog.csdn.net/weixin_37522117/article/details/125376144
 3.http://www.jos.org.cn/1000-9825/18/2083.pdf
-4.https://blog.csdn.net/weixin_37522117/article/details/125376144
+4.https://blog.csdn.net/weixin_37522117/article/details/125376144（同2）
 
 5.装箱问题简介
 
