@@ -12,6 +12,6 @@ class Box:
 
   def revolve(self):
     self.state = (self.state + 1) % 6
-    (self.l, self.w, self.h) = self.states(self.state)
-    (self.x, self.y, self.z) = self.states(self.state)
+    (self.l, self.w, self.h) = self.states[self.state]
+    (self.x, self.y, self.z) = self.states[self.state]
     return self.state

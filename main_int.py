@@ -20,6 +20,7 @@ def eval(file_path):
   # 解题方法
   random.shuffle(boxes_list)
   loaded_boxes = brickwork.solve(container, boxes_list)
+  # loaded_boxes = brickwork.solve_with_revolve(container, boxes_list)
   
   # 合法性检查
   # 将箱子看做一个三位数组，有盒子的地方则加1，查看是否存在大于1的地方，即发生碰撞
@@ -43,3 +44,4 @@ if __name__ == "__main__":
         load_rate, _ = eval("./dataset/" + file_name)
         load_rates.append(load_rate)
       print("{}:{:.4f}".format(file_name, np.mean(load_rates)))
+      break # debug用的，只跑一个测例

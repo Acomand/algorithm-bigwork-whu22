@@ -66,10 +66,10 @@ def solve(container, boxes_list):
           flag = True
           Lz += b.z
           Lx = b.x
-        elif Lz < H:
+        elif Lz < H:  # 放宽参考线
           Lz = H
           Lx = L
-          i -= 1
+          continue
       else:
         for (x, y, z) in I:
           if not (x == Lx and y == 0):
@@ -78,16 +78,17 @@ def solve(container, boxes_list):
             flag = True
             Lx += b.x
             break
-        if flag == False:
+        if flag == False: # 放宽参考线
           Lx = L
-          i -= 1
+          continue
     # 如果找到了
     if flag:
       I.remove((x, y, z))
       # 平移盒子，分别沿着x、y、z方向平移，使得坐标尽可能的小
       # x-axis
       prev_x = x
-      x_candidates = sorted([loaded_x + loaded_box.x for (loaded_box, loaded_x, _, _) in loaded_boxes_list])
+      x_candidates = [loaded_x + loaded_box.x for (loaded_box, loaded_x, _, _) in loaded_boxes_list]
+      x_candidates = sorted(list(set(x_candidates)))
       x_candidates.insert(0, 0)
       for x_candidate in x_candidates:
         if if_could_place(x_candidate, y, z, b, loaded_boxes_list, container):
@@ -96,7 +97,8 @@ def solve(container, boxes_list):
       assert(x <= prev_x)
       # y-axis
       prev_y = y
-      y_candidates = sorted([loaded_y + loaded_box.y for (loaded_box, _, loaded_y, _) in loaded_boxes_list])
+      y_candidates = [loaded_y + loaded_box.y for (loaded_box, _, loaded_y, _) in loaded_boxes_list]
+      y_candidates = sorted(list(set(y_candidates)))
       y_candidates.insert(0, 0)
       for y_candidate in y_candidates:
         if if_could_place(x, y_candidate, z, b, loaded_boxes_list, container):
@@ -105,7 +107,8 @@ def solve(container, boxes_list):
       assert(y <= prev_y)
       # z-axis
       prev_z = z
-      z_candidates = sorted([loaded_z + loaded_box.z for (loaded_box, _, _, loaded_z) in loaded_boxes_list])
+      z_candidates = [loaded_z + loaded_box.z for (loaded_box, _, _, loaded_z) in loaded_boxes_list]
+      z_candidates = sorted(list(set(z_candidates)))
       z_candidates.insert(0, 0)
       for z_candidate in z_candidates:
         if if_could_place(x, y, z_candidate, b, loaded_boxes_list, container):
@@ -130,3 +133,102 @@ def solve(container, boxes_list):
         I.insert(append_index, (append_x, append_y, append_z))
     i += 1
   return loaded_boxes_list
+
+# TODO 这个地方是可以通过一个参数控制和上面的算法合二为一的，其实我是有点想写一个基类
+# 然后这个基类是包含多种方法的，外面通过参数控制调用就行
+def solve_with_revolve(container, boxes_list):
+  I = [(0, 0, 0)]
+  Lz, Lx = 0, 0
+  loaded_boxes_list = []
+
+  i = 0
+  L, _, H = container[0], container[1], container[2]
+  while i < len(boxes_list):
+    b:Box = boxes_list[i]
+    flag = False
+    # 寻找第一个可以放置的位置
+    for (x, y, z) in I:
+      if if_could_place(x, y, z, b, loaded_boxes_list, container) and (x + b.x <= Lx) and (z + b.z <= Lz):
+        flag = True
+        break
+    # 如果没找到
+    if flag == False:
+      if Lx == 0 or Lx == L:
+        if if_could_place(0, 0, Lz, b, loaded_boxes_list, container): 
+          x, y, z = 0, 0, Lz
+          flag = True
+          Lz += b.z
+          Lx = b.x
+        elif Lz < H:  # 放宽参考线
+          Lz = H
+          Lx = L
+          continue
+      else:
+        for (x, y, z) in I:
+          if not (x == Lx and y == 0):
+            continue
+          if if_could_place(x, y, z, b, loaded_boxes_list, container) and (z + b.z <= Lz):
+            flag = True
+            Lx += b.x
+            break
+        if flag == False: # 放宽参考线
+          Lx = L
+          continue
+    # 如果找到了
+    if flag:
+      I.remove((x, y, z))
+      # 平移盒子，分别沿着x、y、z方向平移，使得坐标尽可能的小
+      # x-axis
+      prev_x = x
+      x_candidates = [loaded_x + loaded_box.x for (loaded_box, loaded_x, _, _) in loaded_boxes_list]
+      x_candidates = sorted(list(set(x_candidates)))
+      x_candidates.insert(0, 0)
+      for x_candidate in x_candidates:
+        if if_could_place(x_candidate, y, z, b, loaded_boxes_list, container):
+          x = x_candidate
+          break
+      assert(x <= prev_x)
+      # y-axis
+      prev_y = y
+      y_candidates = [loaded_y + loaded_box.y for (loaded_box, _, loaded_y, _) in loaded_boxes_list]
+      y_candidates = sorted(list(set(y_candidates)))
+      y_candidates.insert(0, 0)
+      for y_candidate in y_candidates:
+        if if_could_place(x, y_candidate, z, b, loaded_boxes_list, container):
+          y = y_candidate
+          break
+      assert(y <= prev_y)
+      # z-axis
+      prev_z = z
+      z_candidates = [loaded_z + loaded_box.z for (loaded_box, _, _, loaded_z) in loaded_boxes_list]
+      z_candidates = sorted(list(set(z_candidates)))
+      z_candidates.insert(0, 0)
+      for z_candidate in z_candidates:
+        if if_could_place(x, y, z_candidate, b, loaded_boxes_list, container):
+          z = z_candidate
+          break
+      assert(z <= prev_z)
+      # 添加到对应位置
+      loaded_boxes_list.append((b, x, y, z))
+      # 维护列表的有序性
+      for (append_x, append_y, append_z) in [(x + b.x, y, z), (x, y + b.y, z), (x, y, z + b.z)]:
+        append_index = len(I)
+        for index, (exist_x, exist_y, exist_z) in enumerate(I):
+          if append_y < exist_y:
+            append_index = index
+            break
+          elif append_y == exist_y and append_x < exist_x:
+            append_index = index
+            break
+          elif append_y == exist_y and append_x == exist_x and append_z < exist_z:
+            append_index = index
+            break
+        I.insert(append_index, (append_x, append_y, append_z))
+    else:
+      state = b.revolve()
+      if state != 0:
+        continue
+    i += 1
+  return loaded_boxes_list
+
+# TODO 这个算法有一个可见的改进，就是旋转的问题，可以考虑以遗传算法的模式，选择旋转的策略
