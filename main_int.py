@@ -3,7 +3,7 @@ import numpy as np
 import random
 import os
 from box import Box
-from solve_method import brickwork
+from solve_method import brickwork, combinational_heuristic
 
 def eval(file_path):
   # 数据输入
@@ -19,7 +19,8 @@ def eval(file_path):
 
   # 解题方法
   random.shuffle(boxes_list)
-  loaded_boxes = brickwork.solve(container, boxes_list)
+  # loaded_boxes = brickwork.solve(container, boxes_list)
+  loaded_boxes = combinational_heuristic.solve(container, boxes_list)
   # loaded_boxes = brickwork.solve_with_revolve(container, boxes_list)
   
   # 合法性检查
@@ -40,8 +41,8 @@ if __name__ == "__main__":
   for file_name in os.listdir("./dataset/"):
     if "-" in file_name and "E" in file_name and ".csv" in file_name:
       load_rates = []
-      for _ in range(10):
+      for _ in range(1):
         load_rate, _ = eval("./dataset/" + file_name)
         load_rates.append(load_rate)
       print("{}:{:.4f}".format(file_name, np.mean(load_rates)))
-      break # debug用的，只跑一个测例
+      # break # debug用的，只跑一个测例
