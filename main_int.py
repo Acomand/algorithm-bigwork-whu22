@@ -67,4 +67,4 @@ if __name__ == "__main__":
       f.write("{}, {:.4f}, {:.0f}\n".format(file_name, load_rate, solve_time))
       f.close
       print("{}, {:.4f}, {:.0f}ms".format(file_name, load_rate, solve_time))
-      break # debug用的，只跑一个测例
+      # break # debug用的，只跑一个测例
