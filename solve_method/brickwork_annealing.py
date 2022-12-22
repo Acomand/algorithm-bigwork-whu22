@@ -3,6 +3,7 @@ from solve_method import brickwork
 
 import random
 import numpy as np
+import time
 
 # ref: http://www.jos.org.cn/1000-9825/18/2083.pdf（论文的算法2）
 
@@ -46,7 +47,7 @@ def select(boxes_list):
   return boxes_list_neighbor
 
 
-def solve(container, boxes_list):
+def solve(container, boxes_list, time_limit):
   # 预处理：按照体积大小排序，旋转满足z >= y >= x
   boxes_list = sorted(boxes_list, key=lambda b: b.x*b.y*b.z, reverse=True)
   boxes_list_t = list(boxes_list)
@@ -60,19 +61,22 @@ def solve(container, boxes_list):
   # 
   setup_temperature = 1.0
   end_temperature = 0.01
-  drop_rate = 0.5
+  drop_rate = 0.9
   setup_domain_length = 0
   delta_domain_length = len(set([(b.x, b.y, b.z) for b in boxes_list]))
   boxes_list_best = boxes_list
-  loaded_rate = get_scores(container, brickwork.solve(container, boxes_list))
+  loaded_rate = get_scores(container, brickwork.solve(container, boxes_list, time_limit))
   f, f_best = loaded_rate, loaded_rate
   
+  start_time = time.time()
   for i in range(1, 3):
     t, L_t = setup_temperature, setup_domain_length
-    while t >= end_temperature:
+    while t >= end_temperature and time.time() - start_time <= time_limit / 1000:
       for _ in range(L_t):
+        if time.time() - start_time >= time_limit / 1000:
+          break
         boxes_list_neighbor = select(boxes_list)
-        f_neighor = get_scores(container, brickwork.solve(container, boxes_list_neighbor))
+        f_neighor = get_scores(container, brickwork.solve(container, boxes_list_neighbor, time_limit))
         delta_f = f_neighor - f
         if delta_f > 0:
           f = f_neighor
@@ -87,4 +91,5 @@ def solve(container, boxes_list):
             boxes_list = boxes_list_neighbor
       L_t += delta_domain_length
       t *= drop_rate
-  return brickwork.solve(container, boxes_list_best)
+      drop_rate *= 0.8
+  return brickwork.solve(container, boxes_list_best, time_limit)

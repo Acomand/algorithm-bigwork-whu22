@@ -43,7 +43,7 @@ def if_could_place(b_min_x, b_min_y, b_min_z, b:Box, loaded_boxes_list, containe
       if_could_place = False
   return if_could_place
 
-def solve(container, boxes_list):
+def solve(container, boxes_list, time_limit):
   I = [(0, 0, 0)]
   Lz, Lx = 0, 0
   loaded_boxes_list = []
