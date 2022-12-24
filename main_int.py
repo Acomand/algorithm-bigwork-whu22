@@ -49,7 +49,7 @@ def eval(file_path, method, time_limit):
   for (loaded_box, _, _, _) in loaded_boxes:
     loaded_v += loaded_box.l * loaded_box.w * loaded_box.h
   V = container[0] * container[1] * container[2]
-  return loaded_v / V, len(loaded_boxes) / len(boxes_list), solve_time
+  return loaded_v / V, len(loaded_boxes) / len(boxes_list), solve_time, loaded_boxes
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
   for file_name in os.listdir("./dataset/"):
     if "-" in file_name and "E" in file_name and ".csv" in file_name:
-      load_rate, _, solve_time = eval("./dataset/" + file_name, method, time_limit)
+      load_rate, _, solve_time, loaded_boxes = eval("./dataset/" + file_name, method, time_limit)
       f = open("result/" + method + "_" + str(time_limit) + ".txt", "a+")
       f.write("{}, {:.4f}, {:.0f}\n".format(file_name, load_rate, solve_time))
       f.close
