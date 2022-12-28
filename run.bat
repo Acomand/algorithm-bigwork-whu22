@@ -21,6 +21,18 @@ python main_int.py --method ourmethod
 python main_int.py --method ourmethod
 python main_int.py --method ourmethod
 
+# 浮点数（考虑小数点后两位）
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+python main_float.py --method ourmethod
+
 python main_int.py --method random_place
 python main_int.py --method random_place
 python main_int.py --method random_place
